@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Users\UserRequestPost;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return Inertia::render('User', compact('users'));
+        return Inertia::render('Users/User', compact('users'));
     }
 
     /**
@@ -22,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Users/Create');
     }
 
     /**
@@ -31,9 +32,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequestPost $request)
     {
-        //
+        $user = User::create($request->validated());
+        return redirect()->route('user.index');
     }
 
     /**
