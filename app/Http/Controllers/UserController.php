@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Users\UserRequestPost;
+use App\Http\Requests\Users\UserRequestUpdate;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::orderBy('id')->get();
         return Inertia::render('Users/User', compact('users'));
     }
 
@@ -46,7 +47,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = User::findOrFail($id);
+        return Inertia::render('Users/Show', compact('customer'));
     }
 
     /**
@@ -55,9 +57,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($customer)
     {
-        //
+        $customer = User::find($customer);
+        return Inertia::render('Users/Edit', compact('customer'));
     }
 
     /**
@@ -67,9 +70,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequestUpdate $request, $id)
     {
-        //
+        $user = User::find($id);
+        $user->update($request->validated());
+        return redirect()->route('user.index');
     }
 
     /**
@@ -80,6 +85,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //delete user
+        dd($id);
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('user.index');
     }
 }

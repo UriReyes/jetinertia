@@ -19,7 +19,7 @@
                                 <font-awesome-icon
                                     :icon="['fas', 'plus-circle']"
                                 />
-                                Create
+                                Add
                             </Link>
                         </div>
                         <table class="w-full text-sm text-left text-gray-500">
@@ -38,23 +38,52 @@
                             <tbody>
                                 <tr
                                     class="bg-white border-b hover:bg-gray-50"
-                                    v-for="user in users"
-                                    :key="user.id"
+                                    v-for="customer in users"
+                                    :key="customer.id"
                                 >
                                     <td
                                         scope="row"
                                         class="px-6 py-4 font-medium text-gray-900"
                                     >
-                                        {{ user.id }}
+                                        {{ customer.id }}
                                     </td>
-                                    <td class="px-6 py-4">{{ user.name }}</td>
-                                    <td class="px-6 py-4">{{ user.email }}</td>
+                                    <td class="px-6 py-4">
+                                        {{ customer.name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ customer.email }}
+                                    </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a
-                                            href="#"
-                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            >Edit</a
+                                        <Link
+                                            :href="
+                                                route('user.edit', customer.id)
+                                            "
+                                            class="p-2 text-sm text-black transition-colors rounded-md hover:text-blue-800 hover:transition-shadow"
                                         >
+                                            <font-awesome-icon
+                                                :icon="['fas', 'edit']"
+                                            />
+                                        </Link>
+                                        <a
+                                            class="p-2 text-sm text-black transition-colors rounded-md hover:text-blue-800 hover:transition-shadow"
+                                            type="button"
+                                            data-modal-toggle="popup-modal{{user.id}}"
+                                        >
+                                            <font-awesome-icon
+                                                :icon="['fas', 'trash-alt']"
+                                            />
+                                        </a>
+                                        <QuestionAlertVue
+                                            title="¿Está seguro de eliminar este registro?"
+                                            :key="customer.id"
+                                            :customerId="customer.id"
+                                            :url="
+                                                route(
+                                                    'user.destroy',
+                                                    customer.id
+                                                )
+                                            "
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
@@ -68,10 +97,12 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import QuestionAlertVue from "@/Layouts/QuestionAlert.vue";
 export default {
     props: ["users"],
     components: {
         AppLayout,
+        QuestionAlertVue,
     },
 };
 </script>

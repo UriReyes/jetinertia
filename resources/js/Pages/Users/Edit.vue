@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Create User">
+    <AppLayout title="Edit User">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Create User
+                Edit User
             </h2>
         </template>
         <div class="py-12">
@@ -11,7 +11,11 @@
                     <div
                         class="relative p-6 overflow-x-auto shadow-md sm:rounded-lg"
                     >
-                        <FormUser :errors="errors" />
+                        <FormUser
+                            :errors="errors"
+                            :isEdit="true"
+                            :customer="customer"
+                        />
                     </div>
                 </div>
             </div>
@@ -24,6 +28,10 @@ import FormUser from "./Form.vue";
 export default {
     props: {
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        customer: {
             type: Object,
             default: () => ({}),
         },
